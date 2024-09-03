@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm i && nodemon index.js",
+    "start": "npm i && node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavlo Zinchenko",
+  "license": "Proprietary",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "cors",
+    "postgresql",
+    "backend",
+    "javascript",
+    "pavlo-zinchenko"
+  ]
+}
