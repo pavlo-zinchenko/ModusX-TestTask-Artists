@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Avatar, Typography, Box, IconButton, Button, CircularProgress, Alert } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
-import { getArtist, getArtistSongs } from '../services/artistService';
+import { getArtist, getArtistSongs } from '../services/ArtistService';
 import SongCard from './SongCard';
 
 export default function ArtistDetail() {

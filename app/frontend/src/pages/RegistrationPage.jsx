@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TextField, Button, Container, Box, Typography } from '@mui/material';
-import { register } from '../services/authService';
+import { register } from '../services/AuthService';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

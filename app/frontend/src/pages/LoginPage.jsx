@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TextField, Button, Container, Box, Typography } from '@mui/material';
-import { login } from '../services/authService';
+import { login } from '../services/AuthService';
 import { ToastContainer } from 'react-toastify';
 
 export default function LoginPage() {
