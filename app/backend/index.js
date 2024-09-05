@@ -14,7 +14,7 @@ const favouriteRoutes = require('./src/routes/favouriteRoutes');
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 3031;
 
 const allowedOrigins = [
     process.env.FRONTEND_URL,
