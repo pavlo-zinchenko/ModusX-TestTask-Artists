@@ -16,7 +16,19 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3030;
 
-app.use(cors());
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+}));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -31,7 +43,11 @@ app.use('/user', userRoutes);
 app.use('/artists', artistRoutes);
 app.use('/favourite', favouriteRoutes);
 
-app.use(errorHandler); 
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Not Found' });
+});
+
+app.use(errorHandler);
 
 startTokenCleaner();
 
