@@ -1,0 +1,37 @@
+CREATE TABLE artists (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    avatar VARCHAR(255) DEFAULT NULL,
+    songs_count INT DEFAULT 0
+);
+
+CREATE TABLE songs (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    cover VARCHAR(255) DEFAULT NULL,
+    artist_id INT REFERENCES artists(id) ON DELETE CASCADE,
+    duration INT NOT NULL
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE favourites (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    song_id INT REFERENCES songs(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_favourite UNIQUE (user_id, song_id)
+);
+
+CREATE TABLE tokens (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
+);
