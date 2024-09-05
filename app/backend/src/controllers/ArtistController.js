@@ -12,8 +12,21 @@ class ArtistController {
 
     async getArtist(req, res, next) {
         try {
-            const artist = await ArtistService.getArtist(req.params.id);
+            const artistId = req.params.artistId;
+            const artist = await ArtistService.getArtist(artistId);
             res.json(artist);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getSongsByArtist(req, res, next) {
+        try {
+            const { page, limit } = req.query;
+            const artistId = req.params.id;
+            const songsData = await ArtistService.getSongsByArtist(artistId, page, limit);
+            console.log('songsData:', songsData);
+            res.json(songsData);
         } catch (error) {
             next(error);
         }
