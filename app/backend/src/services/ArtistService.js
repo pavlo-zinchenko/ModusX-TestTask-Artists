@@ -32,36 +32,39 @@ class ArtistService {
         }
     }
 
-    async getSongsByArtist(artistId, page = 1, limit = 5) {
+    async getSongsByArtist(artistId, limit, offset) {
         try {
-            const offset = (page - 1) * limit;
+            const result = await db.query(
+                'SELECT * FROM songs WHERE artist_id = $1 LIMIT $2 OFFSET $3',
+                [artistId, limit, offset]
+            );
 
-            const countResult = await db.query(`
-                SELECT COUNT(*) AS total FROM songs
-                WHERE artist_id = $1
-            `, [artistId]);
+            if (!result.rows.length) {
+                throw new ApiError(404, 'No songs found for this artist');
+            }
 
-            const totalSongs = parseInt(countResult.rows[0].total, 10);
+            return result.rows;
+        } catch (error) {
+            console.error('Error getting songs by artist:', error.message);
+            throw new ApiError(500, 'Failed to retrieve songs for this artist');
+        }
+    }
 
-            if (totalSongs === 0) {
+    async getTotalSongCount(artistId) {
+        try {
+            const result = await db.query(
+                'SELECT COUNT(*) as count FROM songs WHERE artist_id = $1',
+                [artistId]
+            );
+
+            if (!result.rows.length) {
                 throw new ApiError(404, `No songs found for artist with ID ${artistId}`);
             }
 
-            const result = await db.query(`
-                SELECT id, name, cover, duration FROM songs
-                WHERE artist_id = $1
-                LIMIT $2 OFFSET $3
-            `, [artistId, limit, offset]);
-
-            return {
-                songs: result.rows,
-                total: totalSongs,
-                page,
-                limit,
-            };
+            return result.rows[0].count;
         } catch (error) {
-            console.error('Error getting songs by artist:', error.message);
-            throw new ApiError(500, 'Failed to retrieve songs for artist');
+            console.error('Error getting total song count:', error.message);
+            throw new ApiError(500, 'Failed to retrieve total song count');
         }
     }
 }

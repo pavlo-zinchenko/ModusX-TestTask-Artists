@@ -22,11 +22,22 @@ class ArtistController {
 
     async getSongsByArtist(req, res, next) {
         try {
-            const { page, limit } = req.query;
             const artistId = req.params.id;
-            const songsData = await ArtistService.getSongsByArtist(artistId, page, limit);
-            console.log('songsData:', songsData);
-            res.json(songsData);
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 5;
+
+            const offset = (page - 1) * limit;
+
+            const songsData = await ArtistService.getSongsByArtist(artistId, limit, offset);
+            const totalSongs = await ArtistService.getTotalSongCount(artistId);
+
+            const totalPages = Math.ceil(totalSongs / limit);
+
+            res.json({
+                songs: songsData,
+                totalPages: totalPages,
+                currentPage: page,
+            });
         } catch (error) {
             next(error);
         }
