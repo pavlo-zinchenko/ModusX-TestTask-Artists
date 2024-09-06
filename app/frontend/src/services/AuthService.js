@@ -1,4 +1,4 @@
-import axiosInstance from '../api/axiosConfig';
+import axiosInstance from './api';
 import { executeRequest } from '../utils/executeRequest';
 
 export const login = async (credentials) => {
