@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Typography, Box } from '@mui/material';
-import ArtistCard from './ArtistCard';
-import { getArtists } from '../services/ArtistService';
+import ArtistCard from '@components/ArtistCard';
+import { getArtists } from '@services/ArtistService';
 
 export default function ArtistsList() {
   const [artists, setArtists] = useState([]);

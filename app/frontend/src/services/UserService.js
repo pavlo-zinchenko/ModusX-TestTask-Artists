@@ -1,5 +1,5 @@
 import axiosInstance from './api';
-import { executeRequest } from '../utils/executeRequest';
+import { executeRequest } from '@utils/executeRequest';
 
 export const getUser = async (userId) => {
     return await executeRequest(

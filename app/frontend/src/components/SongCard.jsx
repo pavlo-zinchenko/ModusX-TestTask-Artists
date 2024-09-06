@@ -5,7 +5,7 @@ import { useState } from 'react';
 export default function SongCard({ song, onToggleFavorite }) {
   const songUrl = `${import.meta.env.VITE_API_URL}/uploads/songs/${song.name}`;
   const coverUrl = `${import.meta.env.VITE_API_URL}/uploads/covers/${song.cover}` || '/default-cover.png';
-  
+
   const [isFavorited, setIsFavorited] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -18,7 +18,6 @@ export default function SongCard({ song, onToggleFavorite }) {
 
   const handlePlay = () => {
     setIsPlaying(!isPlaying);
-    // Логика проигрывания песни
   };
 
   return (
@@ -37,7 +36,6 @@ export default function SongCard({ song, onToggleFavorite }) {
         '&:hover': { transform: 'scale(1.02)' },
       }}
     >
-      {/* Обложка с кнопкой воспроизведения */}
       <Box
         sx={{
           position: 'relative',
@@ -75,7 +73,6 @@ export default function SongCard({ song, onToggleFavorite }) {
         </IconButton>
       </Box>
 
-      {/* Информация о песне */}
       <Stack
         spacing={2}
         sx={{
@@ -90,7 +87,6 @@ export default function SongCard({ song, onToggleFavorite }) {
           {song.name}
         </Typography>
 
-        {/* Проигрыватель */}
         <Box sx={{ width: '100%', maxWidth: 600 }}>
           <audio controls style={{ width: '100%' }}>
             <source src={songUrl} type="audio/mpeg" />
@@ -98,7 +94,6 @@ export default function SongCard({ song, onToggleFavorite }) {
           </audio>
         </Box>
 
-        {/* Кнопки действия */}
         <Stack
           direction="row"
           spacing={2}

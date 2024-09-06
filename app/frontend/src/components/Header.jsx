@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import { Box, Typography, IconButton, Button } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import { toggleTheme } from '../redux/slices/themeSlice';
+
+import { toggleTheme } from '@slices/themeSlice';
 
 export default function Header() {
   const theme = useTheme();

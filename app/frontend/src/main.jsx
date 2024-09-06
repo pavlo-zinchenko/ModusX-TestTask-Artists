@@ -3,7 +3,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
-import { store } from './redux/store';
+import { store } from '@store';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App.jsx';
 import getTheme from './theme';

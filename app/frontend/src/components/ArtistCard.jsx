@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Card, CardContent, Avatar, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,7 +43,3 @@ export default function ArtistCard({ artist }) {
     </Card>
   );
 }
-
-ArtistCard.propTypes = {
-  artist: PropTypes.object.isRequired,
-};

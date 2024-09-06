@@ -1,4 +1,4 @@
-import { notifySuccess, notifyError } from '../utils/ToastNotifications';
+import { notifySuccess, notifyError } from '@utils/ToastNotifications';
 
 export const executeRequest = async (requestFunction, successMessage) => {
     try {
