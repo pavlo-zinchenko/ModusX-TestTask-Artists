@@ -30,7 +30,7 @@ export default function ArtistCard({ artist }) {
     >
       <Avatar
         alt={artist.name}
-        src={artist.avatar === 'NULL' ? '/placeholder.png' : artist.avatar}
+        src={artist.avatar === 'NULL' ? '/placeholder.png' : `${import.meta.env.VITE_API_URL}/uploads/avatars/${artist.avatar}`}
         sx={{ width: 100, height: 100, mb: 2 }}
       />
       <CardContent sx={{ textAlign: 'center' }}>
