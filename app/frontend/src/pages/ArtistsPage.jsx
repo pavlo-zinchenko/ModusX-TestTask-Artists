@@ -3,7 +3,7 @@ import { Typography, Box } from '@mui/material';
 import ArtistCard from '@components/ArtistCard';
 import { getArtists } from '@services/ArtistService';
 
-export default function ArtistsList() {
+export default function ArtistsPage() {
   const [artists, setArtists] = useState([]);
 
   useEffect(() => {

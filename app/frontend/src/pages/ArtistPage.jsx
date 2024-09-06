@@ -6,7 +6,7 @@ import { ArrowBack, ArrowLeft, ArrowRight } from '@mui/icons-material';
 import { getArtist, getArtistSongs } from '@services/ArtistService';
 import SongCard from '@components/SongCard';
 
-export default function ArtistDetail() {
+export default function ArtistPage() {
   const { artistId } = useParams();
   const navigate = useNavigate();
   const [artist, setArtist] = useState(null);
