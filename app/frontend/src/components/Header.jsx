@@ -1,45 +1,68 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import { Box, Typography, IconButton, Button } from '@mui/material';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
+import { Box, Typography, IconButton, Button, Badge } from '@mui/material';
+import { ArrowBack, Brightness4, Brightness7, Favorite } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-
 import { toggleTheme } from '@slices/themeSlice';
 
 export default function Header() {
+  const [headerTitle, setHeaderTitle] = useState('Music App');
+  const [returnButton, setReturnButton] = useState(false);
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAuthenticated = () => {
+  const favoriteCount = useSelector((state) => state.favourites.favouriteSongs.length);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) return false;
-    return true;
-  };
+    setAuthenticated(!!token);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const { pathname } = location;
+    let title = 'Music App';
+
+    switch (true) {
+      case pathname === '/login':
+        setReturnButton(false);
+        title = 'Sign In';
+        break;
+      case pathname === '/register':
+        setReturnButton(false);
+        title = 'Sign Up';
+        break;
+      case pathname === '/artists':
+        setReturnButton(false);
+        title = 'Artists';
+        break;
+      case pathname === '/favourites':
+        setReturnButton(true);
+        title = 'Favourites';
+        break;
+      case /^\/artists\/\d+$/.test(pathname):
+        setReturnButton(true);
+        const artistId = pathname.split('/')[2];
+        title = `Artist`;
+        break;
+      default:
+        setReturnButton(false);
+        title = 'Music App';
+        break;
+    }
+
+    setHeaderTitle(title);
+    document.title = title;
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    setAuthenticated(false);
     navigate('/');
   };
-
-  useEffect(() => {
-    switch (location.pathname) {
-      case '/':
-        document.title = 'Music App - Home';
-        break;
-      case '/login':
-        document.title = 'Music App - Sign In';
-        break;
-      case '/signup':
-        document.title = 'Music App - Sign Up';
-        break;
-      default:
-        document.title = 'Music App';
-    }
-  }, [location.pathname]);
 
   return (
     <Box
@@ -53,22 +76,42 @@ export default function Header() {
         p: 2,
       }}
     >
-      <Typography variant="h6" onClick={() => navigate('/')} sx={{ cursor: 'pointer' }}>
-        Music App
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {returnButton && (
+          <IconButton onClick={() => navigate(-1)} sx={{ color: 'white' }}>
+            <ArrowBack />
+          </IconButton>
+        )}
+        <Typography variant="h6" onClick={() => navigate('/')} sx={{ cursor: 'pointer', ml: returnButton ? 1 : 0 }}>
+          {headerTitle}
+        </Typography>
+      </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {!isAuthenticated() ? (
+        <IconButton onClick={() => navigate('/favourites')} sx={{ color: 'white', mr: 2 }}>
+          <Badge badgeContent={favoriteCount} color="error">
+            <Favorite />
+          </Badge>
+        </IconButton>
+
+        {!authenticated ? (
           <>
-            <Button color="inherit" onClick={() => navigate('/login')}>Sign In</Button>
-            <Button color="inherit" onClick={() => navigate('/register')}>Sign Up</Button>
+            <Button color="inherit" onClick={() => navigate('/login')}>
+              Sign In
+            </Button>
+            <Button color="inherit" onClick={() => navigate('/register')}>
+              Sign Up
+            </Button>
           </>
         ) : (
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
+          <Button color="inherit" onClick={handleLogout}>
+            Log Out
+          </Button>
         )}
 
         <IconButton
           sx={{ color: 'white', ml: 2 }}
+          aria-label="toggle theme"
           onClick={() => dispatch(toggleTheme())}
         >
           {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
