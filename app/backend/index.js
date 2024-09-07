@@ -2,8 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const app = express();
-
 const startTokenCleaner = require('./src/cron/tokenCleaner');
 const errorHandler = require('./src/middlewares/errorHandler');
 
@@ -12,26 +12,16 @@ const userRoutes = require('./src/routes/userRoutes');
 const artistRoutes = require('./src/routes/artistRoutes');
 const favouriteRoutes = require('./src/routes/favouriteRoutes');
 
+const ArtistService = require('./src/services/ArtistService');
+const jwtMiddleware = require('./src/middlewares/jwtMiddleware');
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3031;
 
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-];
-
-const allowedMethods = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-];
-
-const allowedHeaders = [
-    'Content-Type',
-    'Accept',
-    'Authorization',
-];
+const allowedOrigins = [process.env.FRONTEND_URL];
+const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+const allowedHeaders = ['Content-Type', 'Accept', 'Authorization'];
 
 app.use(cors({
     origin: allowedOrigins,
@@ -47,7 +37,65 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads/avatars', express.static(path.join(__dirname, 'uploads/avatars')));
+app.use('/uploads/covers', express.static(path.join(__dirname, 'uploads/covers')));
+
+app.get('/uploads/songs/:filename', (req, res, next) => {
+    const { filename } = req.params;
+    const filePath = path.join(__dirname, 'uploads', 'songs', filename);
+
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        const fileExtension = path.extname(filename).toLowerCase();
+        const allowedExtensions = ['.mp3', '.wav'];
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            return res.status(403).json({ error: 'Forbidden file type' });
+        }
+
+        res.sendFile(filePath);
+    });
+});
+
+app.get('/downloads/songs/:filename', jwtMiddleware, async (req, res, next) => {
+    const { filename } = req.params;
+    const { artist_id } = req.query;
+    const filePath = path.join(__dirname, 'uploads', 'songs', filename);
+
+    fs.access(filePath, fs.constants.F_OK, async (err) => {
+        if (err) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        const fileExtension = path.extname(filename).toLowerCase();
+        const allowedExtensions = ['.mp3'];
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            return res.status(403).json({ error: 'Forbidden file type' });
+        }
+
+        try {
+            const artist = await ArtistService.getArtist(artist_id);
+
+            if (!artist) {
+                return res.status(404).json({ error: 'Artist not found' });
+            }
+
+            const encodedFilename = encodeURIComponent(`${artist.name} - ${filename}`);
+
+            res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodedFilename}`);
+            res.setHeader('Content-Type', 'audio/mpeg');
+
+            res.sendFile(filePath);
+        } catch (err) {
+            console.error('Error fetching artist or sending file:', err);
+            next(err);
+        }
+    });
+});
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);

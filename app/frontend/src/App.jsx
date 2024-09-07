@@ -1,13 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
-import Header from '@components/Header';
-import Footer from '@components/Footer';
-import ArtistPage from '@pages/ArtistPage/index';
+import Header from '@components/Header/index';
+import Footer from '@components/Footer/index';
+import ArtistPage from '@pages/ArtistPage';
 import ArtistsPage from '@pages/ArtistsPage';
-import FavouritesPage from '@pages/FavouritesPage/index';
-import HomePage from '@pages/HomePage/index';
-import LoginPage from '@pages/LoginPage/index';
-import NotFoundPage from '@pages/NotFoundPage/index';
-import RegistrationPage from '@pages/RegistrationPage/index';
+import FavouritesPage from '@pages/FavouritesPage';
+import HomePage from '@pages/HomePage';
+import LoginPage from '@pages/LoginPage';
+import NotFoundPage from '@pages/NotFoundPage';
+import RegistrationPage from '@pages/RegistrationPage';
 
 export default function App() {
   return (

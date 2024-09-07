@@ -81,7 +81,7 @@ export default function ScrollableLine() {
               height: '100%',
             }}
             image={artist.avatar ? url + artist.avatar : url + 'default-avatar.png'}
-            alt={artist.name || 'Unknown Artist'}
+            alt={artist.name}
           />
         </CustomCard>
       ))}

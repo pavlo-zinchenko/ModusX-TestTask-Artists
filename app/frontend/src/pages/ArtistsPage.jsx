@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
-import ArtistCard from '@components/ArtistCard';
+import ArtistCard from '@components/ArtistCard/index';
 import { fetchArtists } from '@slices/artistsSlice';
 import Loading from '@common/Loading';
 
@@ -10,7 +10,7 @@ export default function ArtistsPage() {
   const { artists, loading } = useSelector((state) => state.artists);
 
   useEffect(() => {
-    dispatch(fetchArtists()); // Fetch artists
+    dispatch(fetchArtists());
   }, [dispatch]);
 
   if (loading) {

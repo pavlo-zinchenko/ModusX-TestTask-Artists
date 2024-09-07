@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 
 import ArtistsCarousel from '@components/ArtistsCarousel';
-import StartNow from '@components/StartNow';
-import Features from '@components/Features';
+import StartNow from '@components/StartNow/index';
+import Features from '@components/Features/index';
 
 export default function HomePage() {
   return (
