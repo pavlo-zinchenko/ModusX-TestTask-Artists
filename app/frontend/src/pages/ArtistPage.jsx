@@ -32,7 +32,6 @@ export default function ArtistPage() {
           setSongs([]);
         }
 
-        console.log(total, itemsPerPage, Math.ceil(total / itemsPerPage))
         setTotalPages(Math.ceil(total / itemsPerPage));
       } catch (error) {
         setError('Failed to fetch artist details or songs.');

@@ -7,7 +7,6 @@ import { store } from '@store';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App.jsx';
 import getTheme from './theme';
-import './index.css';
 
 function ThemedApp() {
   const mode = useSelector((state) => state.theme.mode);

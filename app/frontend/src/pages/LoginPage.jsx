@@ -4,7 +4,6 @@ import { login } from '@services/AuthService';
 import { ToastContainer } from 'react-toastify';
 
 export default function LoginPage() {
-  console.log('LoginPage');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,7 +14,7 @@ export default function LoginPage() {
 
   return (
     <Container maxWidth="xs">
-      <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
