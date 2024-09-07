@@ -34,16 +34,12 @@ class ArtistService {
 
     async getSongsByArtist(artistId, limit, offset) {
         try {
-            const result = await db.query(
+            const songsResult = await db.query(
                 'SELECT * FROM songs WHERE artist_id = $1 LIMIT $2 OFFSET $3',
                 [artistId, limit, offset]
             );
 
-            if (!result.rows.length) {
-                throw new ApiError(404, 'No songs found for this artist');
-            }
-
-            return result.rows;
+            return songsResult.rows;
         } catch (error) {
             console.error('Error getting songs by artist:', error.message);
             throw new ApiError(500, 'Failed to retrieve songs for this artist');

@@ -36,7 +36,6 @@ class ArtistController {
             res.json({
                 songs: songsData,
                 totalPages: totalPages,
-                currentPage: page,
             });
         } catch (error) {
             next(error);
