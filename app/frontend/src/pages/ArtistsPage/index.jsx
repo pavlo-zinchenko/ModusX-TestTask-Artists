@@ -1,37 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Box } from '@mui/material';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, Typography } from '@mui/material';
 import ArtistCard from '@components/ArtistCard';
-import { getArtists } from '@services/ArtistService';
-import { setArtists, setError, clearArtists } from '@slices/artistsSlice';
+import { fetchArtists } from '@slices/artistsSlice';
 import Loading from '@common/Loading';
 
 export default function ArtistsPage() {
   const dispatch = useDispatch();
-  const { artists, error } = useSelector((state) => state.artists);
-  const [loading, setLoading] = useState(true);
+  const { artists, loading } = useSelector((state) => state.artists);
 
   useEffect(() => {
-    const fetchArtists = async () => {
-      try {
-        const data = await getArtists();
-        dispatch(setArtists(data));
-        setLoading(false);
-      } catch (error) {
-        dispatch(setError('Failed to fetch artists'));
-        setLoading(false);
-      }
-    };
-
-    fetchArtists();
+    dispatch(fetchArtists()); // Fetch artists
   }, [dispatch]);
 
   if (loading) {
     return <Loading />;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
   }
 
   return (
