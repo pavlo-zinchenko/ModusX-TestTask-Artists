@@ -10,7 +10,7 @@ CREATE TABLE songs (
     name VARCHAR(255) NOT NULL,
     cover VARCHAR(255) DEFAULT NULL,
     artist_id INT REFERENCES artists(id) ON DELETE CASCADE,
-    duration INT NOT NULL
+    duration VARCHAR(8) NOT NULL
 );
 
 CREATE TABLE users (
