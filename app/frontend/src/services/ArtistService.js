@@ -21,8 +21,10 @@ export const getArtistSongs = async (artistId, page = 1, limit = 5) => {
         `Songs for artist ${artistId} fetched successfully`
     );
 
+    const { songs, totalPages } = response;
+
     return {
-        songs: response,
-        totalPages: Math.ceil(response.total / limit)
+        songs,
+        totalPages,
     };
 };
