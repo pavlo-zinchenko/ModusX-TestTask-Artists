@@ -7,7 +7,8 @@ import loginValidationSchema from '@validations/loginValidation';
 export default function LoginPage() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const { token } = await login(values);
+      const { user, token } = await login(values);
+      localStorage.setItem('user', user);
       localStorage.setItem('token', token);
       window.location.href = '/';
     } finally {

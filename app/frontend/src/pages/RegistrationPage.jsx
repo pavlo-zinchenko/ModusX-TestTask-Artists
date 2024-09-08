@@ -7,7 +7,8 @@ import registrationValidationSchema from '@validations/registrationValidation';
 export default function RegistrationPage() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const { token } = await register(values);
+      const { user, token } = await register(values);
+      localStorage.setItem('user', user);
       localStorage.setItem('token', token);
       window.location.href = '/';
     } finally {
