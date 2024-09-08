@@ -19,11 +19,13 @@ class AuthService {
 
             return { user: registeredUser, token };
         } catch (error) {
+            console.error('Error registering user:', error.message);
+
             if (error.code === '23505') {
                 throw new ApiError(400, 'Email already exists');
             }
-            console.error('Error registering user:', error);
-            throw new ApiError(500, 'Failed to register user');
+
+            throw new ApiError(500, error.message || 'Failed to register user');
         }
     }
 
@@ -50,8 +52,8 @@ class AuthService {
 
             return { user: userWithoutPassword, token };
         } catch (error) {
-            console.error('Error logging in:', error);
-            throw new ApiError(500, 'Failed to login');
+            console.error('Error logging in:', error.message);
+            throw new ApiError(500, error.message || 'Failed to login');
         }
     }
 
