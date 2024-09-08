@@ -2,7 +2,6 @@ import axiosInstance from './api';
 import { executeRequest } from '@utils/executeRequest';
 
 export const login = async (credentials) => {
-    console.log(credentials);
     return await executeRequest(() => axiosInstance.post('/auth/login', credentials));
 };
 

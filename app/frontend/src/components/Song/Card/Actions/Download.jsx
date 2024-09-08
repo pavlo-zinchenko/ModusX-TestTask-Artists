@@ -3,8 +3,8 @@ import { Download as DownloadUI } from '@mui/icons-material';
 import { downloadFile } from '@services/DownloadService';
 
 export default function Download({ url, name, artist_id }) {
-  const handleDownload = async () => {
-    await downloadFile(url, name, artist_id);
+  const handleDownload = () => {
+    downloadFile(url, name, artist_id);
   };
 
   return (

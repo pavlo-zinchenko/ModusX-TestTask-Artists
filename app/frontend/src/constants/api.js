@@ -1,2 +1,4 @@
 export const baseURL = import.meta.env.VITE_API_URL;
-export const timeout = 2500;
+export const TIMEOUT = 30000;
+export const CHUNK_SIZE = 2 * 1024 * 1024;
+

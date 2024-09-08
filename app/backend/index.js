@@ -10,13 +10,15 @@ dotenv.config();
 const PORT = process.env.PORT || 3031;
 
 const allowedOrigins = [process.env.FRONTEND_URL];
-const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+const allowedMethods = ['HEAD', 'GET', 'POST', 'PUT', 'DELETE'];
 const allowedHeaders = ['Content-Type', 'Accept', 'Authorization'];
+const exposedHeaders = ['Content-Length', 'Accept-Ranges']
 
 app.use(cors({
     origin: allowedOrigins,
     methods: allowedMethods,
     allowedHeaders: allowedHeaders,
+    exposedHeaders: exposedHeaders,
 }));
 
 app.options('*', cors());

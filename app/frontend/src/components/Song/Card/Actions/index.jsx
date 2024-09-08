@@ -4,7 +4,6 @@ import AddFavourite from './AddFavourite';
 import Download from './Download';
 
 export default function Actions({ song }) {
-  console.log(song);
   return (
     <Stack
       direction="column"

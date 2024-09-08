@@ -5,6 +5,8 @@ const path = require('path');
 
 router.use('/avatars', express.static(path.join(__dirname, '../../uploads/avatars')));
 router.use('/covers', express.static(path.join(__dirname, '../../uploads/covers')));
+
 router.get('/songs/:filename', UploadController.getSong);
+router.head('/songs/:filename', UploadController.getSongMetadata);
 
 module.exports = router;

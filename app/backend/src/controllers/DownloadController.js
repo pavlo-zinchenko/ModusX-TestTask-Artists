@@ -5,7 +5,17 @@ class DownloadController {
         try {
             const { filename } = req.params;
             const { artist_id } = req.query;
-            await DownloadService.DownloadSong(filename, artist_id, res);
+            await DownloadService.DownloadSong(filename, artist_id, req, res);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async DownloadSongMetadata(req, res, next) {
+        try {
+            const { filename } = req.params;
+            const { artist_id } = req.query;
+            await DownloadService.DownloadSongMetadata(filename, artist_id, res);
         } catch (error) {
             next(error);
         }

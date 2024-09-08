@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { baseURL, timeout } from '@constants/api.js';
+import { baseURL, TIMEOUT } from '@constants/api.js';
 
 const token = localStorage.getItem('token');
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    timeout: timeout,
+    timeout: TIMEOUT,
     headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
