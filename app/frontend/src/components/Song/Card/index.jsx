@@ -7,14 +7,15 @@ import Actions from './Actions';
 import Container from './Container';
 import Cover from './Cover';
 import Details from './Details';
+import { baseURL } from '@constants/api';
 
 export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId, isFavorited }) {
   const song = {
     ...originalSong,
     isFavorited: isFavorited,
-    url: `${import.meta.env.VITE_API_URL}/uploads/songs/${originalSong.name}.mp3`,
+    url: `${baseURL}/uploads/songs/${originalSong.name}.mp3`,
   };
-  const coverUrl = song.cover ? `${import.meta.env.VITE_API_URL}/uploads/covers/${song.name}.png` : '/default.png';
+  const coverUrl = song.cover ? `${baseURL}/uploads/covers/${song.name}.png` : '/default.png';
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 

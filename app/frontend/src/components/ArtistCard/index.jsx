@@ -2,6 +2,7 @@ import { Card, CardContent, Avatar, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setArtist } from '@slices/artistsSlice';
 import { useNavigate } from 'react-router-dom';
+import { baseURL } from '@constants/api';
 
 export default function ArtistCard({ artist }) {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function ArtistCard({ artist }) {
     >
       <Avatar
         alt={artist.name}
-        src={artist.avatar ? `${import.meta.env.VITE_API_URL}/uploads/avatars/${artist.avatar}` : '/default-avatar.png'}
+        src={artist.avatar ? `${baseURL}/uploads/avatars/${artist.avatar}` : '/default-avatar.png'}
         sx={{ width: 100, height: 100, mb: 2 }}
       />
       <CardContent sx={{ textAlign: 'center' }}>

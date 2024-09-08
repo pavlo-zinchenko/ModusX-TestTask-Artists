@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { baseURL, timeout } from '@constants/api.js';
 
 const token = localStorage.getItem('token');
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    timeout: 1000,
+    baseURL: baseURL,
+    timeout: timeout,
     headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

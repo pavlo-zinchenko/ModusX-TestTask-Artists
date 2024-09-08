@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, CardMedia } from '@mui/material';
 import CustomCard from '@common/CustomCard';
+import { baseURL } from '@constants/api';
 
-const url = `${import.meta.env.VITE_API_URL}/uploads/avatars/`;
+const url = `${baseURL}/uploads/avatars/`;
 
 export default function ScrollableLine() {
   const lineRef = useRef(null);

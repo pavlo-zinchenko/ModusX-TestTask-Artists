@@ -10,6 +10,7 @@ import Loading from '@common/Loading';
 
 import Pagination from '@components/Pagination';
 import SongsList from '../components/Song/List';
+import { baseURL } from '@constants/api';
 
 export default function ArtistPage() {
   const { artistId } = useParams();
@@ -51,7 +52,7 @@ export default function ArtistPage() {
         <Avatar
           alt={selectedArtist.name}
           src={selectedArtist.avatar
-            ? `${import.meta.env.VITE_API_URL}/uploads/avatars/${selectedArtist.avatar}`
+            ? `${baseURL}/uploads/avatars/${selectedArtist.avatar}`
             : '/default-avatar.png'}
           sx={{ width: 150, height: 150, margin: '0 auto', mb: 2 }}
         />

@@ -1,11 +1,10 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { autoClose } from '@constants/toast';
 
 let primaryColor = '#1976d2';
 let secondaryColor = 'black';
 let contrastText = '#ffffff';
-
-const seconds = 5;
 
 export const setToastTheme = (primary, secondary, contrast) => {
     primaryColor = primary;
@@ -16,7 +15,7 @@ export const setToastTheme = (primary, secondary, contrast) => {
 export const notifySuccess = (message) => {
     toast.success(message, {
         position: 'bottom-right',
-        autoClose: seconds * 1000,
+        autoClose: autoClose,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -34,7 +33,7 @@ export const notifySuccess = (message) => {
 export const notifyError = (message) => {
     toast.error(message, {
         position: 'bottom-right',
-        autoClose: seconds * 1000,
+        autoClose: autoClose,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
