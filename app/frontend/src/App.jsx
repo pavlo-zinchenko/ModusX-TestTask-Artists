@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -11,19 +11,14 @@ import HomePage from '@pages/HomePage';
 import LoginPage from '@pages/LoginPage';
 import NotFoundPage from '@pages/NotFoundPage';
 import RegistrationPage from '@pages/RegistrationPage';
-import { loadFavourites } from '@slices/favouritesSlice';
-import { getFavourites } from '@services/FavouriteService';
+import { loadFavourites } from '@store/slices/favouritesSlice';
 
 export default function App() {
   const dispatch = useDispatch();
   const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   useEffect(() => {
-    if (isAuthenticated) {
-      getFavourites().then((response) => {
-        dispatch(loadFavourites(response.data));
-      });
-    }
+    loadFavourites(isAuthenticated, dispatch);
   }, [dispatch, isAuthenticated]);
 
   return (

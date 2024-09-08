@@ -1,13 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addFavourite, removeFavourite } from '@services/FavouriteService';
+import { getFavourites, addFavourite, removeFavourite } from '@services/FavouriteService';
 
-const loadFavouritesFromStorage = () => {
+export const loadFavouritesFromStorage = () => {
   const storedFavourites = localStorage.getItem('favouriteSongs');
   return storedFavourites ? JSON.parse(storedFavourites) : [];
 };
 
+export const loadFavourites = async (isAuthenticated, dispatch) => {
+  if (!isAuthenticated) {
+    const storageFavourites = loadFavouritesFromStorage();
+    dispatch(loadFavouritesSuccess(storageFavourites));
+    return;
+  }
+
+  try {
+    const data = await getFavourites();
+    if (data && data.length > 0) {
+      dispatch(loadFavouritesSuccess(data));
+    } else {
+      const storageFavourites = loadFavouritesFromStorage();
+      dispatch(loadFavouritesSuccess(storageFavourites));
+    }
+  } catch (error) {
+    const storageFavourites = loadFavouritesFromStorage();
+    dispatch(loadFavouritesSuccess(storageFavourites));
+  }
+};
+
 const initialState = {
-  favouriteSongs: loadFavouritesFromStorage(),
+  favouriteSongs: [],
 };
 
 export const favouritesSlice = createSlice({
@@ -15,36 +36,31 @@ export const favouritesSlice = createSlice({
   initialState,
   reducers: {
     toggleFavourite: (state, action) => {
-      const songId = action.payload;
+      const song_id = action.payload;
       const isAuthenticated = Boolean(localStorage.getItem('token'));
 
-      if (state.favouriteSongs.includes(songId)) {
-        state.favouriteSongs = state.favouriteSongs.filter(id => id !== songId);
-        console.log(`Removing song ${songId} from favourites`);
+      const existingSong = state.favouriteSongs?.find((id) => id === song_id);
+
+      if (existingSong) {
+        state.favouriteSongs = state.favouriteSongs?.filter((id) => id !== song_id);
         if (isAuthenticated) {
-          removeFavourite(songId);
+          removeFavourite(song_id);
         }
       } else {
-        state.favouriteSongs.push(songId);
-        console.log(`Adding song ${songId} to favourites`);
+        state.favouriteSongs = [...state.favouriteSongs, song_id];
         if (isAuthenticated) {
-          addFavourite(songId);
+          addFavourite(song_id);
         }
       }
 
       localStorage.setItem('favouriteSongs', JSON.stringify(state.favouriteSongs));
     },
-    clearFavourites: (state) => {
-      state.favouriteSongs = [];
-      localStorage.removeItem('favouriteSongs');
-      console.log('Clearing all favourites');
-    },
-    loadFavourites: (state, action) => {
+    loadFavouritesSuccess: (state, action) => {
       state.favouriteSongs = action.payload;
       localStorage.setItem('favouriteSongs', JSON.stringify(state.favouriteSongs));
-    }
+    },
   },
 });
 
-export const { toggleFavourite, clearFavourites, loadFavourites } = favouritesSlice.actions;
+export const { toggleFavourite, loadFavouritesSuccess } = favouritesSlice.actions;
 export default favouritesSlice.reducer;

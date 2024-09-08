@@ -14,8 +14,8 @@ class FavouriteController {
     async addFavourite(req, res, next) {
         try {
             const user_id = req.user.id;
-            const { id } = req.params;
-            const user = await FavouriteService.addFavourite(user_id, id);
+            const { song_id } = req.body;
+            const user = await FavouriteService.addFavourite(user_id, song_id);
             res.json(user);
         } catch (error) {
             next(error);
@@ -25,8 +25,8 @@ class FavouriteController {
     async removeFavourite(req, res, next) {
         try {
             const user_id = req.user.id;
-            const { id } = req.params;
-            const user = await FavouriteService.removeFavourite(user_id, id);
+            const { song_id } = req.body;
+            const user = await FavouriteService.removeFavourite(user_id, song_id);
             res.json(user);
         } catch (error) {
             next(error);

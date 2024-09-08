@@ -8,7 +8,8 @@ export default function RegistrationPage() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const { user, token } = await register(values);
-      localStorage.setItem('user', user);
+      localStorage.removeItem('favouriteSongs');
+      localStorage.setItem('user_id', user.id);
       localStorage.setItem('token', token);
       window.location.href = '/';
     } finally {

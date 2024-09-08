@@ -5,10 +5,10 @@ export const getFavourites = async () => {
     return await executeRequest(() => axiosInstance.get('/favourites'));
 };
 
-export const addFavourite = async (artistId) => {
-    return await executeRequest(() => axiosInstance.post(`/favourites/${artistId}`));
+export const addFavourite = async (song_id) => {
+    return await executeRequest(() => axiosInstance.post(`/favourites`, { song_id }));
 };
 
-export const removeFavourite = async (artistId) => {
-    return await executeRequest(() => axiosInstance.delete(`/favourites/${artistId}`));
+export const removeFavourite = async (song_id) => {
+    return await executeRequest(() => axiosInstance.delete(`/favourites`, { data: { song_id } }));
 };

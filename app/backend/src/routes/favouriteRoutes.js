@@ -4,7 +4,7 @@ const FavouriteController = require('../controllers/FavouriteController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router.get('/', jwtMiddleware, FavouriteController.getFavourites);
-router.post('/:id', jwtMiddleware, FavouriteController.addFavourite);
-router.delete('/:id', jwtMiddleware, FavouriteController.removeFavourite);
+router.post('/', jwtMiddleware, FavouriteController.addFavourite);
+router.delete('/', jwtMiddleware, FavouriteController.removeFavourite);
 
 module.exports = router;
