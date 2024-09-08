@@ -1,7 +1,7 @@
 import styled from '@mui/material/styles/styled';
 import { Box, IconButton } from '@mui/material';
 
-export const SCover = styled(Box)(({ theme }) => ({
+export const SCover = styled(Box)(() => ({
     position: 'relative',
     width: '150px',
     height: '150px',

@@ -3,16 +3,14 @@ import { Box, Typography } from '@mui/material';
 import 'react-h5-audio-player/lib/styles.css';
 import AudioPlayer from 'react-h5-audio-player';
 
-import Actions from './Actions';
 import Container from './Container';
 import Cover from './Cover';
 import Details from './Details';
 import { baseURL } from '@constants/api';
 
-export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId, isFavorited }) {
+export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }) {
   const song = {
     ...originalSong,
-    isFavorited: isFavorited,
     url: `${baseURL}/uploads/songs/${originalSong.name}.mp3`,
   };
   const coverUrl = song.cover ? `${baseURL}/uploads/covers/${song.name}.png` : '/default.png';
@@ -66,8 +64,6 @@ export default function SongCard({ song: originalSong, currentSongId, setCurrent
           }}
         />
       </Details>
-
-      <Actions song={song} />
     </Container>
   );
 }

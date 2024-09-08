@@ -1,19 +1,12 @@
-import { Stack } from '@mui/material';
-
+import SActionsContainer from './styled';
 import AddFavourite from './AddFavourite';
 import Download from './Download';
 
 export default function Actions({ song }) {
   return (
-    <Stack
-      direction="column"
-      spacing={1}
-      justifyContent="center"
-      alignItems="center"
-      ml={2}
-    >
-      {/* <AddFavourite /> */}
+    <SActionsContainer>
       <Download {...song} />
-    </Stack>
+      <AddFavourite id={song.id} />
+    </SActionsContainer>
   );
 }

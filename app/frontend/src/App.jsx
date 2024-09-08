@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Header from '@components/Header/index';
@@ -9,8 +11,21 @@ import HomePage from '@pages/HomePage';
 import LoginPage from '@pages/LoginPage';
 import NotFoundPage from '@pages/NotFoundPage';
 import RegistrationPage from '@pages/RegistrationPage';
+import { loadFavourites } from '@slices/favouritesSlice';
+import { getFavourites } from '@services/FavouriteService';
 
 export default function App() {
+  const dispatch = useDispatch();
+  const isAuthenticated = Boolean(localStorage.getItem('token'));
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getFavourites().then((response) => {
+        dispatch(loadFavourites(response.data));
+      });
+    }
+  }, [dispatch, isAuthenticated]);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />

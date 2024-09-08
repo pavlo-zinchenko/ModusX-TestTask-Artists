@@ -1,5 +1,6 @@
 import { SCover, SCardMedia, SPlayPauseButton } from './styled';
 import { PlayArrow, Pause } from '@mui/icons-material';
+import Actions from '../Actions';
 
 export default function Cover({ url, song, setCurrentSongId, isPlaying, setIsPlaying, audioRef }) {
   const handlePlayPause = () => {
@@ -23,6 +24,7 @@ export default function Cover({ url, song, setCurrentSongId, isPlaying, setIsPla
       <SPlayPauseButton className="playPauseButton" onClick={handlePlayPause}>
         {isPlaying ? <Pause fontSize="large" /> : <PlayArrow fontSize="large" />}
       </SPlayPauseButton>
+      <Actions song={song} />
     </SCover>
   );
 }
