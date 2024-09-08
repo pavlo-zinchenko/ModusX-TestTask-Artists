@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 app.use('/auth', require('./src/routes/authRoutes'));
 app.use('/user', require('./src/routes/userRoutes'));
 app.use('/artists', require('./src/routes/artistRoutes'));
-app.use('/favourite', require('./src/routes/favouriteRoutes'));
+app.use('/favourites', require('./src/routes/favouriteRoutes'));
 app.use('/downloads', require('./src/routes/downloadRoutes'));
 app.use('/uploads', require('./src/routes/uploadRoutes'));
 app.use((req, res, next) => {

@@ -5,14 +5,12 @@ class FavouriteService {
     async getFavourites(userId) {
         try {
             const result = await db.query(`
-                SELECT f.*, s.name AS song_name, s.cover, a.name AS artist_name
-                FROM favourites f
-                JOIN songs s ON f.song_id = s.id
-                JOIN artists a ON s.artist_id = a.id
-                WHERE f.user_id = $1
+                SELECT song_id
+                FROM favourites
+                WHERE user_id = $1
             `, [userId]);
 
-            return result.rows;
+            return result.rows.map(row => row.song_id);
         } catch (error) {
             console.error('Error getting favourites:', error.message);
             throw new ApiError(500, 'Unable to fetch favourite songs');

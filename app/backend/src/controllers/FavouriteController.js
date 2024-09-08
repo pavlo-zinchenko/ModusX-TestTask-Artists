@@ -3,7 +3,8 @@ const FavouriteService = require('../services/FavouriteService');
 class FavouriteController {
     async getFavourites(req, res, next) {
         try {
-            const favourites = await FavouriteService.getFavourites(req.user.id);
+            const user_id = req.user.id;
+            const favourites = await FavouriteService.getFavourites(user_id);
             res.json(favourites);
         } catch (error) {
             next(error);
@@ -12,7 +13,9 @@ class FavouriteController {
 
     async addFavourite(req, res, next) {
         try {
-            const user = await FavouriteService.addFavourite(req.user.id, req.body);
+            const user_id = req.user.id;
+            const { id } = req.params;
+            const user = await FavouriteService.addFavourite(user_id, id);
             res.json(user);
         } catch (error) {
             next(error);
@@ -21,7 +24,9 @@ class FavouriteController {
 
     async removeFavourite(req, res, next) {
         try {
-            const user = await FavouriteService.removeFavourite(req.user.id, req.params.id);
+            const user_id = req.user.id;
+            const { id } = req.params;
+            const user = await FavouriteService.removeFavourite(user_id, id);
             res.json(user);
         } catch (error) {
             next(error);
