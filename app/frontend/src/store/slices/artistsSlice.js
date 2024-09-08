@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getArtists, getArtist } from '@services/ArtistService';
-import { notifySuccess, notifyError } from '@utils/ToastNotifications';
+import { notifyError } from '@utils/ToastNotifications';
 
 const initialState = {
   artists: [],
-  artist: null,
+  selectedArtist: null,
   loading: false,
 };
 
@@ -15,29 +15,30 @@ export const artistsSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
-    setArtistsSuccess: (state, action) => {
+    setArtist: (state, action) => {
+      state.selectedArtist = action.payload;
+      state.loading = false;
+    },
+    setArtists: (state, action) => {
       state.artists = action.payload;
       state.loading = false;
     },
-    setArtistSuccess: (state, action) => {
-      state.artist = action.payload;
-      state.loading = false;
-    },
-    setFailure: (state) => {
-      state.loading = false;
-    },
     clearArtist: (state) => {
-      state.artist = null;
+      state.selectedArtist = null;
+    },
+    clearArtists: (state) => {
+      state.selectedArtist = null;
     },
   },
 });
 
 export const {
   setLoading,
-  setArtistsSuccess,
-  setArtistSuccess,
+  setArtist,
+  setArtists,
   setFailure,
   clearArtist,
+  clearArtists,
 } = artistsSlice.actions;
 
 export const fetchArtists = () => async (dispatch, getState) => {
@@ -51,11 +52,10 @@ export const fetchArtists = () => async (dispatch, getState) => {
 
   try {
     const response = await getArtists();
-    dispatch(setArtistsSuccess(response));
-    notifySuccess('Artists loaded successfully');
+    dispatch(setArtists(response));
   } catch (error) {
-    dispatch(setFailure('Failed to fetch artists'));
     notifyError('Failed to load artists');
+    window.location.reload();
   }
 };
 
@@ -70,16 +70,19 @@ export const fetchArtist = (artistId) => async (dispatch, getState) => {
 
   try {
     const response = await getArtist(artistId);
-    dispatch(setArtistSuccess(response));
-    notifySuccess('Artist loaded successfully');
+    dispatch(setArtist(response));
   } catch (error) {
-    dispatch(setFailure('Failed to fetch artist details'));
     notifyError('Failed to load artist details');
+    window.location.reload();
   }
 };
 
 export const clearSelectedArtist = () => (dispatch) => {
   dispatch(clearArtist());
+};
+
+export const clearSelectedArtists = () => (dispatch) => {
+  dispatch(clearArtists());
 };
 
 export default artistsSlice.reducer;

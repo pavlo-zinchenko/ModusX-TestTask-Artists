@@ -15,8 +15,8 @@ export default function ArtistPage() {
   const { artistId } = useParams();
   const dispatch = useDispatch();
 
-  const { songs, loading, totalPages, page } = useSelector((state) => state.songs);
-  const { artist } = useSelector((state) => state.artists);
+  const { songs, loading: loadingSongs, totalPages, page } = useSelector((state) => state.songs);
+  const { selectedArtist, loading: loadingArtist } = useSelector((state) => state.artists);
 
   const [currentSongId, setCurrentSongId] = useState(null);
 
@@ -29,10 +29,18 @@ export default function ArtistPage() {
     dispatch(setPage(newPage));
   };
 
-  if (loading) {
+  if (loadingArtist) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
         <Loading />
+      </Box>
+    );
+  }
+
+  if (!selectedArtist) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+        <Typography>Artist not found</Typography>
       </Box>
     );
   }
@@ -41,13 +49,13 @@ export default function ArtistPage() {
     <Box sx={{ mt: 3 }}>
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <Avatar
-          alt={artist.name}
-          src={artist.avatar
-            ? `${import.meta.env.VITE_API_URL}/uploads/avatars/${artist.avatar}`
+          alt={selectedArtist.name}
+          src={selectedArtist.avatar
+            ? `${import.meta.env.VITE_API_URL}/uploads/avatars/${selectedArtist.avatar}`
             : '/default-avatar.png'}
           sx={{ width: 150, height: 150, margin: '0 auto', mb: 2 }}
         />
-        <Typography variant="h4">{artist.name}</Typography>
+        <Typography variant="h4">{selectedArtist.name}</Typography>
       </Box>
 
       <Box
@@ -57,8 +65,10 @@ export default function ArtistPage() {
           alignItems: 'center',
           mb: 5,
         }}>
-        {!songs?.length ? (
-          <Typography>No songs available</Typography>
+        {loadingSongs ? (
+          <Loading />
+        ) : !songs?.length ? (
+          <Typography>No songs available for this artist</Typography>
         ) : (
           <SongsList
             songs={songs}

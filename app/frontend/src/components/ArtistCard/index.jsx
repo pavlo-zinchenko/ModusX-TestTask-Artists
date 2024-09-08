@@ -1,10 +1,14 @@
 import { Card, CardContent, Avatar, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { setArtist } from '@slices/artistsSlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function ArtistCard({ artist }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleCardClick = () => {
+    dispatch(setArtist(artist));
     navigate(`/artists/${artist.id}`);
   };
 

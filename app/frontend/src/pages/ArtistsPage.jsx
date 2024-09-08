@@ -19,7 +19,14 @@ export default function ArtistsPage() {
 
   return (
     <Box>
-      <Typography variant="h4" component="h1" sx={{ textAlign: 'center', margin: '20px 0' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        sx={{
+          textAlign: 'center',
+          margin: '20px 0'
+        }}
+      >
         Artists
       </Typography>
       <Box
@@ -30,7 +37,10 @@ export default function ArtistsPage() {
         }}
       >
         {artists.map(artist => (
-          <ArtistCard key={artist.id} artist={artist} />
+          <ArtistCard
+            key={artist.id}
+            artist={artist}
+          />
         ))}
       </Box>
     </Box>

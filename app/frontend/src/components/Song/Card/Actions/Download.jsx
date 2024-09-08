@@ -1,17 +1,11 @@
 import { IconButton } from '@mui/material';
 import { Download as DownloadUI } from '@mui/icons-material';
+import { downloadFile } from '@services/DownloadService';
 
 export default function Download({ url, name, artist_id }) {
-  function handleDownload() {
-    const artistId = encodeURIComponent(artist_id);
-    const link = document.createElement('a');
-    url = url.replace('upload', 'download');
-    link.href = `${url}?artist_id=${artist_id}`;
-    link.setAttribute('download', `${name} - ${artistId}`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+  const handleDownload = async () => {
+    await downloadFile(url, name, artist_id);
+  };
 
   return (
     <IconButton

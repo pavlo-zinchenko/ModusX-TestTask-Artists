@@ -45,7 +45,6 @@ export default function Header() {
         break;
       case /^\/artists\/\d+$/.test(pathname):
         setReturnButton(true);
-        const artistId = pathname.split('/')[2];
         title = `Artist`;
         break;
       default:
@@ -61,7 +60,7 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setAuthenticated(false);
-    navigate('/');
+    window.location.href = '/';
   };
 
   return (

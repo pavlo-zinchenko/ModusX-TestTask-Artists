@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getArtistSongs } from '@services/ArtistService';
-import { notifyError, notifySuccess } from '@utils/ToastNotifications';
+import { notifyError } from '@utils/ToastNotifications';
 
 const initialState = {
   songs: [],
@@ -39,10 +39,9 @@ export const fetchArtistSongs = (artistId, page = 1) => async (dispatch) => {
 
     dispatch(setSongs(songs));
     dispatch(setTotalPages(totalPages));
-
-    notifySuccess('Songs loaded successfully');
   } catch (error) {
     notifyError('Failed to load artist songs');
+    window.location.reload();
   }
 };
 
