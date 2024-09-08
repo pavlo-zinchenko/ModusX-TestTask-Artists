@@ -5,7 +5,7 @@ import { toggleFavourite } from '@slices/favouritesSlice';
 
 export default function AddFavourite({ id }) {
   const dispatch = useDispatch();
-  const isFavorited = useSelector((state) => state.favourites.favouriteSongs.includes(id));
+  const isFavorited = useSelector((state) => state.favourites.favouriteSongs.map((song) => song.id).includes(id));
 
   function handleFavourite() {
     dispatch(toggleFavourite(id));

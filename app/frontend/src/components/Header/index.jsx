@@ -14,7 +14,7 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const favoriteCount = useSelector((state) => state.favourites.favouriteSongs.length);
+  const favoriteCount = useSelector((state) => state.favourites?.favouriteSongs?.length);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {

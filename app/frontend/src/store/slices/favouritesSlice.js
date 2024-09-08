@@ -29,6 +29,8 @@ export const loadFavourites = async (isAuthenticated, dispatch) => {
 
 const initialState = {
   favouriteSongs: [],
+  page: 1,
+  totalPages: 1,
 };
 
 export const favouritesSlice = createSlice({
@@ -39,15 +41,15 @@ export const favouritesSlice = createSlice({
       const song_id = action.payload;
       const isAuthenticated = Boolean(localStorage.getItem('token'));
 
-      const existingSong = state.favouriteSongs?.find((id) => id === song_id);
+      const existingSong = state.favouriteSongs?.map((favSong) => favSong.id).includes(song_id);
 
       if (existingSong) {
-        state.favouriteSongs = state.favouriteSongs?.filter((id) => id !== song_id);
+        state.favouriteSongs = state.favouriteSongs?.filter((favSong) => favSong.id !== song_id);
         if (isAuthenticated) {
           removeFavourite(song_id);
         }
       } else {
-        state.favouriteSongs = [...state.favouriteSongs, song_id];
+        state.favouriteSongs = [...state.favouriteSongs, { id: song_id }];
         if (isAuthenticated) {
           addFavourite(song_id);
         }
@@ -59,8 +61,25 @@ export const favouritesSlice = createSlice({
       state.favouriteSongs = action.payload;
       localStorage.setItem('favouriteSongs', JSON.stringify(state.favouriteSongs));
     },
+    setFavouritesPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setFavouritesTotalPages: (state, action) => {
+      state.totalPages = action.payload;
+    },
   },
 });
 
-export const { toggleFavourite, loadFavouritesSuccess } = favouritesSlice.actions;
+export const {
+  toggleFavourite,
+  loadFavouritesSuccess,
+  setFavouritesPage,
+  setFavouritesTotalPages
+} = favouritesSlice.actions;
 export default favouritesSlice.reducer;
+
+export const fetchFavouritesSongs = (page = 1) => async (dispatch) => {
+  const { favouriteSongs, totalPages } = await getFavourites(page);
+  dispatch(loadFavouritesSuccess(favouriteSongs));
+  dispatch(setFavouritesTotalPages(totalPages));
+};

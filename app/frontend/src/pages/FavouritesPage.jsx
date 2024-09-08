@@ -1,15 +1,22 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import SongCard from '@components/Song/Card';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
+import { fetchFavouritesSongs, setFavouritesPage } from '@slices/favouritesSlice';
+import SongCard from '@components/Song/Card';
+import Pagination from '@components/Pagination';
 
 export default function FavouritesPage() {
-  const favouriteSongs = useSelector((state) => state.favourites.favouriteSongs);
-  const allSongs = useSelector((state) => state.songs.songs);
-
-  const favouriteSongDetails = allSongs.filter((song) => favouriteSongs.includes(song.id));
-
+  const dispatch = useDispatch();
+  const { favouriteSongs, totalPages, page } = useSelector((state) => state.favourites);
   const [currentSongId, setCurrentSongId] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchFavouritesSongs(page));
+  }, [dispatch, page]);
+
+  const handlePageChange = (newPage) => {
+    dispatch(setFavouritesPage(newPage));
+  };
 
   return (
     <Box sx={{ mt: 3, textAlign: 'center' }}>
@@ -17,20 +24,29 @@ export default function FavouritesPage() {
         Favourites
       </Typography>
 
-      {favouriteSongDetails.length === 0 ? (
-        <Typography>No favorite songs yet.</Typography>
+      {favouriteSongs.length === 0 ? (
+        <Typography>No favourite songs yet.</Typography>
       ) : (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {favouriteSongDetails.map((song) => (
-            <SongCard
-              key={song.id}
-              song={song}
-              isFavorited={true}
-              currentSongId={currentSongId}
-              setCurrentSongId={setCurrentSongId}
+        <>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {favouriteSongs.map((song) => (
+              <SongCard
+                key={song.id}
+                song={song}
+                isFavorited={true}
+                currentSongId={currentSongId}
+                setCurrentSongId={setCurrentSongId}
+              />
+            ))}
+          </Box>
+          {totalPages > 1 && (
+            <Pagination
+              totalPages={totalPages}
+              page={page}
+              onPageChange={handlePageChange}
             />
-          ))}
-        </Box>
+          )}
+        </>
       )}
     </Box>
   );

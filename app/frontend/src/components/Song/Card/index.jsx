@@ -1,3 +1,4 @@
+// id, cover, name, duration
 import { useState, useRef, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import 'react-h5-audio-player/lib/styles.css';
@@ -8,7 +9,7 @@ import Cover from './Cover';
 import Details from './Details';
 import { baseURL } from '@constants/api';
 
-export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }) {
+export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId = null }) {
   const song = {
     ...originalSong,
     url: `${baseURL}/uploads/songs/${originalSong.name}.mp3`,

@@ -16,6 +16,9 @@ export default function ArtistPage() {
   const { songs, loading: loadingSongs, totalPages, page } = useSelector((state) => state.songs);
   const { selectedArtist, loading: loadingArtist } = useSelector((state) => state.artists);
 
+  const { favouriteSongs } = useSelector((state) => state.favourites);
+  console.log(favouriteSongs);
+
   const [currentSongId, setCurrentSongId] = useState(null);
 
   useEffect(() => {

@@ -2,15 +2,24 @@ const db = require('../db/index');
 const ApiError = require('../utils/ApiError');
 
 class FavouriteService {
-    async getFavourites(userId) {
+    async getFavourites(userId, limit = 5, offset = 0) {
         try {
             const result = await db.query(`
-                SELECT song_id
-                FROM favourites
-                WHERE user_id = $1
+                SELECT s.id, s.cover, s.name, s.duration
+                FROM favourites f
+                JOIN songs s ON f.song_id = s.id
+                WHERE f.user_id = $1
+                LIMIT $2 OFFSET $3
+            `, [userId, limit, offset]);
+
+            const totalSongsResult = await db.query(`
+                SELECT COUNT(*)
+                FROM favourites f
+                WHERE f.user_id = $1
             `, [userId]);
 
-            return result.rows.map(row => row.song_id);
+            const totalPages = Math.ceil(totalSongsResult.rows[0].count / limit);
+            return { favouriteSongs: result.rows, totalPages };
         } catch (error) {
             console.error('Error getting favourites:', error.message);
             throw new ApiError(500, 'Unable to fetch favourite songs');
