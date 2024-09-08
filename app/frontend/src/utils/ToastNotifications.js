@@ -5,6 +5,8 @@ let primaryColor = '#1976d2';
 let secondaryColor = 'black';
 let contrastText = '#ffffff';
 
+const seconds = 5;
+
 export const setToastTheme = (primary, secondary, contrast) => {
     primaryColor = primary;
     secondaryColor = secondary;
@@ -14,7 +16,7 @@ export const setToastTheme = (primary, secondary, contrast) => {
 export const notifySuccess = (message) => {
     toast.success(message, {
         position: 'bottom-right',
-        autoClose: 3000,
+        autoClose: seconds * 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -32,7 +34,7 @@ export const notifySuccess = (message) => {
 export const notifyError = (message) => {
     toast.error(message, {
         position: 'bottom-right',
-        autoClose: 3000,
+        autoClose: seconds * 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
