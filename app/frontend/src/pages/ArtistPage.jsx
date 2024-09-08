@@ -2,12 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Typography, Box } from '@mui/material';
-
 import { fetchArtist } from '@slices/artistsSlice';
-import { fetchArtistSongs } from '@slices/songsSlice';
-import { setPage } from '@slices/songsSlice';
+import { setPage, fetchArtistSongs } from '@slices/songsSlice';
 import Loading from '@common/Loading';
-
 import Pagination from '@components/Pagination';
 import SongsList from '../components/Song/List';
 import { baseURL } from '@constants/api';
