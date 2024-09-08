@@ -1,15 +1,13 @@
-// id, cover, name, duration
 import { useState, useRef, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import 'react-h5-audio-player/lib/styles.css';
 import AudioPlayer from 'react-h5-audio-player';
-
 import Container from './Container';
 import Cover from './Cover';
 import Details from './Details';
 import { baseURL } from '@constants/api';
 
-export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId = null }) {
+export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }) {
   const song = {
     ...originalSong,
     url: `${baseURL}/uploads/songs/${originalSong.name}.mp3`,
@@ -25,26 +23,36 @@ export default function SongCard({ song: originalSong, currentSongId, setCurrent
     }
   }, [currentSongId, song.id, isPlaying]);
 
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
   return (
     <Container>
       <Cover
-        url={coverUrl}
+        coverUrl={coverUrl}
         song={song}
         isPlaying={isPlaying}
+        currentSongId={currentSongId}
         setIsPlaying={setIsPlaying}
         audioRef={audioRef}
         setCurrentSongId={setCurrentSongId}
       />
 
       <Details>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {song.name}
-          </Typography>
-          <Typography variant="body2" sx={{ marginLeft: 'auto', fontSize: '14px' }}>
-            {song.duration}
-          </Typography>
-        </Box>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
+          {song.name}
+        </Typography>
 
         <AudioPlayer
           ref={audioRef}
@@ -52,8 +60,8 @@ export default function SongCard({ song: originalSong, currentSongId, setCurrent
           showJumpControls={false}
           showDownloadProgress={false}
           autoPlayAfterSrcChange={false}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
+          onPlay={handlePlay}
+          onPause={handlePause}
           style={{
             display: 'block',
             position: 'absolute',
