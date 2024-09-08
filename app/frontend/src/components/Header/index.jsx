@@ -63,6 +63,14 @@ export default function Header() {
     window.location.href = '/';
   };
 
+  const navigateTo = (url) => {
+    if (location.pathname === url) {
+      navigate(url, { replace: true });
+    } else {
+      navigate(url);
+    }
+  };
+
   return (
     <Box
       component="header"
@@ -87,7 +95,7 @@ export default function Header() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton onClick={() => navigate('/favourites')} sx={{ color: 'white', mr: 2 }}>
+        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', mr: 2 }}>
           <Badge badgeContent={favoriteCount} color="error">
             <Favorite />
           </Badge>
@@ -95,10 +103,10 @@ export default function Header() {
 
         {!authenticated ? (
           <>
-            <Button color="inherit" onClick={() => navigate('/login')}>
+            <Button color="inherit" onClick={() => navigateTo('/login')}>
               Sign In
             </Button>
-            <Button color="inherit" onClick={() => navigate('/register')}>
+            <Button color="inherit" onClick={() => navigateTo('/register')}>
               Sign Up
             </Button>
           </>
