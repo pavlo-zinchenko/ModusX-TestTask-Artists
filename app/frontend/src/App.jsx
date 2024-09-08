@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import Header from '@components/Header/index';
 import Footer from '@components/Footer/index';
 import ArtistPage from '@pages/ArtistPage';
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/favourites" element={<FavouritesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <ToastContainer />
       <Footer />
     </div>
   );

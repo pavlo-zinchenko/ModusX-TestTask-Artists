@@ -1,20 +1,18 @@
-import { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
-
+import { Formik, Form, Field } from 'formik';
 import { TextField, Button, Container, Box, Typography } from '@mui/material';
-
 import { register } from '@services/AuthService';
-
 import CustomContainer from '@common/CustomContainer';
+import registrationValidationSchema from '@validations/registrationValidation';
 
 export default function RegistrationPage() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await register({ email, name, password });
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const { token } = await register(values);
+      localStorage.setItem('token', token);
+      window.location.href = '/';
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -24,53 +22,64 @@ export default function RegistrationPage() {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Full Name"
-              name="name"
-              autoComplete="name"
-              autoFocus
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Register
-            </Button>
-          </Box>
+          <Formik
+            initialValues={{ email: '', name: '', password: '' }}
+            validationSchema={registrationValidationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, touched, errors }) => (
+              <Form>
+                <Field
+                  as={TextField}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Full Name"
+                  name="name"
+                  autoComplete="name"
+                  autoFocus
+                  error={touched.name && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+                <Field
+                  as={TextField}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                />
+                <Field
+                  as={TextField}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={isSubmitting}
+                >
+                  Register
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </Box>
-        <ToastContainer />
       </Container>
     </CustomContainer>
   );
