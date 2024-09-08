@@ -55,7 +55,6 @@ export const fetchArtists = () => async (dispatch, getState) => {
     dispatch(setArtists(response));
   } catch (error) {
     notifyError('Failed to load artists');
-    window.location.reload();
   }
 };
 
@@ -73,7 +72,6 @@ export const fetchArtist = (artistId) => async (dispatch, getState) => {
     dispatch(setArtist(response));
   } catch (error) {
     notifyError('Failed to load artist details');
-    window.location.reload();
   }
 };
 

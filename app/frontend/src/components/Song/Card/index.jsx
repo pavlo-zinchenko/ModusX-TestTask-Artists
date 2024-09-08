@@ -62,6 +62,7 @@ export default function SongCard({ song: originalSong, currentSongId, setCurrent
             bottom: '0px',
             border: 'none',
             boxShadow: 'none',
+            backgroundColor: 'transparent',
           }}
         />
       </Details>

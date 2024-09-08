@@ -41,7 +41,6 @@ export const fetchArtistSongs = (artistId, page = 1) => async (dispatch) => {
     dispatch(setTotalPages(totalPages));
   } catch (error) {
     notifyError('Failed to load artist songs');
-    window.location.reload();
   }
 };
 
