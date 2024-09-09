@@ -21,7 +21,7 @@ export const getFavouritesPagination = async (page = 1, limit = 5) => {
 
 
 export const addFavourite = async (song_id) => {
-    return await executeRequest(() => axiosInstance.post(`/favourites`, { data: { song_id } }));
+    return await executeRequest(() => axiosInstance.post(`/favourites`, { song_id }));
 };
 
 export const removeFavourite = async (song_id) => {
