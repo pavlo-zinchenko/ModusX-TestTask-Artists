@@ -10,6 +10,10 @@ export default function FavouritesPage() {
   const { favouriteSongs, totalPages, page } = useSelector((state) => state.favourites);
   const [currentSongId, setCurrentSongId] = useState(null);
 
+  const start = (page - 1) * 5;
+  const end = start + 5;
+  const songs = favouriteSongs?.slice(start, end);
+
   useEffect(() => {
     dispatch(fetchFavouritesSongs(page));
   }, [dispatch, page]);
@@ -24,12 +28,12 @@ export default function FavouritesPage() {
         Favourites
       </Typography>
 
-      {favouriteSongs.length === 0 ? (
+      {favouriteSongs && favouriteSongs.length === 0 ? (
         <Typography>No favourite songs yet.</Typography>
       ) : (
         <>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {favouriteSongs.map((song) => (
+            {songs.map((song) => (
               <SongCard
                 key={song.id}
                 song={song}

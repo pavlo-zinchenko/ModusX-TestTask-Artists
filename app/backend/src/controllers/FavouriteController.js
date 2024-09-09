@@ -11,6 +11,16 @@ class FavouriteController {
         }
     }
 
+    async getFavouritesPagination(req, res, next) {
+        try {
+            const { ids } = req.body;
+            const favourites = await FavouriteService.getFavouritesPagination(ids);
+            res.json(favourites);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     async addFavourite(req, res, next) {
         try {
             const user_id = req.user.id;

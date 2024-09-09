@@ -2,7 +2,14 @@ import axiosInstance from './api';
 import { executeRequest } from '@utils/executeRequest';
 
 export const getArtists = async () => {
-    return await executeRequest(() => axiosInstance.get('/artists'));
+    const ids = JSON.parse(localStorage.getItem('favouriteSongs'))?.map((favSong) => favSong.id);
+    console.log(ids)
+    const response = await executeRequest(() =>
+        axiosInstance.post('/artists', {
+            ids,
+        })
+    );
+    return response;
 };
 
 export const getArtist = async (artistId) => {

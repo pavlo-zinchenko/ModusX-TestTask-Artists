@@ -2,29 +2,42 @@ const db = require('../db/index');
 const ApiError = require('../utils/ApiError');
 
 class FavouriteService {
-    async getFavourites(userId, limit = 5, offset = 0) {
+    async getFavourites(userId) {
         try {
             const result = await db.query(`
                 SELECT s.id, s.cover, s.name, s.duration
                 FROM favourites f
                 JOIN songs s ON f.song_id = s.id
                 WHERE f.user_id = $1
-                LIMIT $2 OFFSET $3
-            `, [userId, limit, offset]);
-
-            const totalSongsResult = await db.query(`
-                SELECT COUNT(*)
-                FROM favourites f
-                WHERE f.user_id = $1
             `, [userId]);
 
-            const totalPages = Math.ceil(totalSongsResult.rows[0].count / limit);
-            return { favouriteSongs: result.rows, totalPages };
+            return { favouriteSongs: result.rows };
         } catch (error) {
             console.error('Error getting favourites:', error.message);
             throw new ApiError(500, 'Unable to fetch favourite songs');
         }
     }
+
+    async getFavouritesPagination(ids) {
+        try {
+            const result = [];
+
+            for (const id of ids) {
+                const song = await db.query(`
+                    SELECT s.id, s.cover, s.name, s.duration
+                    FROM songs s
+                    WHERE s.id = $1
+                `, [id]);
+
+                result.push(song.rows[0]);
+            }
+
+            return result;
+        } catch (error) {
+            console.error('Error getting favourites:', error.message);
+            throw new ApiError(500, 'Unable to fetch favourite songs');
+        }
+    }    
 
     async addFavourite(userId, songId) {
         try {

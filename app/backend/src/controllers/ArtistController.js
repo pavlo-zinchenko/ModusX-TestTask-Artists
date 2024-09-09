@@ -3,7 +3,8 @@ const ArtistService = require('../services/ArtistService');
 class ArtistController {
     async getArtists(req, res, next) {
         try {
-            const artists = await ArtistService.getArtists();
+            const { ids } = req.body;
+            const artists = await ArtistService.getArtists(ids);
             res.json(artists);
         } catch (error) {
             next(error);

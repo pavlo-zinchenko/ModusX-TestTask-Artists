@@ -4,6 +4,7 @@ const FavouriteController = require('../controllers/FavouriteController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router.get('/', jwtMiddleware, FavouriteController.getFavourites);
+router.post('/pagination', FavouriteController.getFavouritesPagination);
 router.post('/', jwtMiddleware, FavouriteController.addFavourite);
 router.delete('/', jwtMiddleware, FavouriteController.removeFavourite);
 

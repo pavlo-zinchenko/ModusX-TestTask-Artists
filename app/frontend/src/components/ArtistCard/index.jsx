@@ -37,12 +37,14 @@ export default function ArtistCard({ artist }) {
         src={artist.avatar ? `${baseURL}/uploads/avatars/${artist.avatar}` : '/default-avatar.png'}
         sx={{ width: 100, height: 100, mb: 2 }}
       />
-      <CardContent sx={{ textAlign: 'center' }}>
+      <CardContent sx={{ textAlign: 'center', padding: 1, paddingBottom: 0 }}>
         <Typography variant="h6" component="div">
           {artist.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {artist.songs_count} {artist.songs_count === 1 ? 'song' : 'songs'}
+        Content time: {artist.total_duration || '00:00'}<br />
+        You liked songs: {artist.liked_count}<br />
+        {artist.songs_count === 1 ? 'Song' : 'Songs'}: {artist.songs_count}
         </Typography>
       </CardContent>
     </Card>
