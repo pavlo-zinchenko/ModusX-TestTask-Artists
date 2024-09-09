@@ -95,12 +95,20 @@ export default function Header() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', mr: 2 }}>
+        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', ml: 1, mr: 1, }}>
           <Badge badgeContent={favoriteCount} color="error">
             <Favorite />
           </Badge>
         </IconButton>
 
+        <IconButton
+          sx={{ color: 'white', ml: 1, mr: 1, }}
+          aria-label="toggle theme"
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+        
         {!authenticated ? (
           <>
             <Button color="inherit" onClick={() => navigateTo('/login')}>
@@ -115,14 +123,6 @@ export default function Header() {
             Log Out
           </Button>
         )}
-
-        <IconButton
-          sx={{ color: 'white', ml: 2 }}
-          aria-label="toggle theme"
-          onClick={() => dispatch(toggleTheme())}
-        >
-          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-        </IconButton>
       </Box>
     </Box>
   );
