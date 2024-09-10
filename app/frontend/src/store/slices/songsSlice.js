@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getArtistSongs } from '@services/ArtistService';
 import { notifyError } from '@utils/ToastNotifications';
+import { SONGS_PER_PAGE } from '@constants/api';
 
 const initialState = {
   songs: [],
@@ -35,7 +36,7 @@ export const fetchArtistSongs = (artistId, page = 1) => async (dispatch) => {
   dispatch(setLoading());
 
   try {
-    const { songs, totalPages } = await getArtistSongs(artistId, page, 5);
+    const { songs, totalPages } = await getArtistSongs(artistId, page, SONGS_PER_PAGE);
 
     dispatch(setSongs(songs));
     dispatch(setTotalPages(totalPages));

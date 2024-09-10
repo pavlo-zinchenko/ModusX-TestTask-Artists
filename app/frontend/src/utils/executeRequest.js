@@ -6,7 +6,7 @@ export const executeRequest = async (requestFunction) => {
         return response.data;
     } catch (error) {
         if (error.response && error.response.data) {
-            notifyError(error.response.data.message);
+            notifyError(error?.response?.data?.message);
         } else {
             notifyError('Something went wrong :(');
         }

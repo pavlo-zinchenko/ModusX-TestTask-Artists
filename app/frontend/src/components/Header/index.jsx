@@ -8,47 +8,47 @@ import { toggleTheme } from '@slices/themeSlice';
 
 export default function Header() {
   const [headerTitle, setHeaderTitle] = useState('Music App');
-  const [returnButton, setReturnButton] = useState(false);
+  const [isReturnButton, setIsReturnButton] = useState(false);
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const favoriteCount = useSelector((state) => state.favourites?.favouriteSongs?.length);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setAuthenticated(!!token);
+    setIsAuthenticated(!!token);
   }, [location.pathname]);
 
   useEffect(() => {
     const { pathname } = location;
     let title = 'Music App';
 
-    switch (true) {
-      case pathname === '/login':
-        setReturnButton(false);
+    switch (pathname) {
+      case '/login':
+        setIsReturnButton(false);
         title = 'Sign In';
         break;
-      case pathname === '/register':
-        setReturnButton(false);
+      case '/register':
+        setIsReturnButton(false);
         title = 'Sign Up';
         break;
-      case pathname === '/artists':
-        setReturnButton(false);
+      case '/artists':
+        setIsReturnButton(false);
         title = 'Artists';
         break;
-      case pathname === '/favourites':
-        setReturnButton(true);
+      case '/favourites':
+        setIsReturnButton(true);
         title = 'Favourites';
         break;
       case /^\/artists\/\d+$/.test(pathname):
-        setReturnButton(true);
+        setIsReturnButton(true);
         title = `Artist`;
         break;
       default:
-        setReturnButton(false);
+        setIsReturnButton(false);
         title = 'Music App';
         break;
     }
@@ -59,7 +59,7 @@ export default function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setAuthenticated(false);
+    setIsAuthenticated(false);
     window.location.href = '/';
   };
 
@@ -84,12 +84,12 @@ export default function Header() {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {returnButton && (
+        {isReturnButton && (
           <IconButton onClick={() => navigate(-1)} sx={{ color: 'white' }}>
             <ArrowBack />
           </IconButton>
         )}
-        <Typography variant="h6" onClick={() => navigate('/')} sx={{ cursor: 'pointer', ml: returnButton ? 1 : 0 }}>
+        <Typography variant="h6" onClick={() => navigate('/')} sx={{ cursor: 'pointer', ml: isReturnButton ? 1 : 0 }}>
           {headerTitle}
         </Typography>
       </Box>
@@ -109,7 +109,7 @@ export default function Header() {
           {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
         </IconButton>
         
-        {!authenticated ? (
+        {!isAuthenticated ? (
           <>
             <Button color="inherit" onClick={() => navigateTo('/login')}>
               Sign In

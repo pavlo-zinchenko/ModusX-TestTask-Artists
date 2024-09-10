@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getFavourites, addFavourite, removeFavourite, getFavouritesPagination } from '@services/FavouriteService';
+import { SONGS_PER_PAGE } from '@constants/api';
 
 export const loadFavouritesFromStorage = () => {
   const storedFavourites = localStorage.getItem('favouriteSongs');
@@ -38,16 +39,16 @@ export const favouritesSlice = createSlice({
   initialState,
   reducers: {
     toggleFavourite: (state, action) => {
-      const song_id = action.payload;
+      const songId = action.payload;
       const isAuthenticated = Boolean(localStorage.getItem('token'));
 
-      const existingSong = state.favouriteSongs?.map((favSong) => favSong.id).includes(song_id);
+      const isSongInFavourites = state.favouriteSongs?.map((favSong) => favSong.id).includes(songId);
 
-      if (existingSong) {
-        state.favouriteSongs = state.favouriteSongs?.filter((favSong) => favSong.id !== song_id);
+      if (isSongInFavourites) {
+        state.favouriteSongs = state.favouriteSongs?.filter((favSong) => favSong.id !== songId);
         if (isAuthenticated) {
-          removeFavourite(song_id);
-          const newTotal = Math.ceil((state.favouriteSongs.length - 1) / 5);
+          removeFavourite(songId);
+          const newTotal = Math.ceil((state.favouriteSongs.length - 1) / SONGS_PER_PAGE);
           state.totalPages = newTotal;
 
           if (state.page > newTotal) {
@@ -55,10 +56,10 @@ export const favouritesSlice = createSlice({
           }
         }
       } else {
-        state.favouriteSongs.push({ id: song_id });
+        state.favouriteSongs.push({ id: songId });
         if (isAuthenticated) {
-          addFavourite(song_id);
-          state.totalPages = Math.ceil((state.favouriteSongs.length + 1) / 5);
+          addFavourite(songId);
+          state.totalPages = Math.ceil((state.favouriteSongs.length + 1) / SONGS_PER_PAGE);
         }
       }
 
@@ -87,13 +88,12 @@ export default favouritesSlice.reducer;
 
 export const fetchFavouritesSongs = (page = 1) => async (dispatch) => {
   try {
-    const limit = 5;
-    const offset = (page - 1) * limit;
+    const offset = (page - 1) * SONGS_PER_PAGE;
 
-    const data = await getFavouritesPagination(limit, offset);
+    const data = await getFavouritesPagination(SONGS_PER_PAGE, offset);
     const count = data.length;
     dispatch(loadFavouritesSuccess(data));
-    dispatch(setFavouritesTotalPages(Math.ceil(count / limit)));
+    dispatch(setFavouritesTotalPages(Math.ceil(count / SONGS_PER_PAGE)));
   } catch (error) {
     console.error('Error fetching favourite songs:', error);
   }

@@ -5,14 +5,12 @@ import { Box, CardMedia } from '@mui/material';
 import CustomCard from '@common/CustomCard';
 import { baseURL } from '@constants/api';
 
-const url = `${baseURL}/uploads/avatars/`;
+const baseAvatarUrl = `${baseURL}/uploads/avatars/`;
 
 export default function ScrollableLine() {
   const lineRef = useRef(null);
   const artists = useSelector((state) => state.artists.artists);
   const navigate = useNavigate();
-
-  const repeatedArtists = artists.length > 1 ? [...artists, ...artists] : [...artists];
 
   useEffect(() => {
     if (!artists.length) return;
@@ -20,7 +18,7 @@ export default function ScrollableLine() {
     let animationFrameId;
 
     const smoothScroll = () => {
-      if (lineRef.current && repeatedArtists.length > 1) {
+      if (lineRef.current && artists.length > 1) {
         lineRef.current.scrollLeft += 1;
 
         const firstChild = lineRef.current.firstChild;
@@ -40,7 +38,7 @@ export default function ScrollableLine() {
     animationFrameId = requestAnimationFrame(smoothScroll);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [artists, repeatedArtists.length]);
+  }, [artists.length]);
 
   return (
     <Box
@@ -56,7 +54,7 @@ export default function ScrollableLine() {
         maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
       }}
     >
-      {repeatedArtists.map((artist, index) => (
+      {artists.map((artist, index) => (
         <CustomCard
           key={`${artist.id}-${index}`}
           onClick={() => navigate(`/artists/${artist.id}`)}
@@ -81,7 +79,7 @@ export default function ScrollableLine() {
               width: '100%',
               height: '100%',
             }}
-            image={artist.avatar ? url + artist.avatar : url + 'default-avatar.png'}
+            image={artist.avatar ? baseAvatarUrl + artist.avatar : baseAvatarUrl + 'default-avatar.png'}
             alt={artist.name}
           />
         </CustomCard>

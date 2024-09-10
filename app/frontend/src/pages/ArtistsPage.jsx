@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import ArtistCard from '@components/ArtistCard/index';
 import { fetchArtists } from '@slices/artistsSlice';
-import Loading from '@common/Loading';
+import Progress from '@common/Progress';
 
 export default function ArtistsPage() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function ArtistsPage() {
   }, [dispatch]);
 
   if (loading) {
-    return <Loading />;
+    return <Progress />;
   }
 
   return (

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Typography, Box } from '@mui/material';
 import { fetchArtist } from '@slices/artistsSlice';
 import { setPage, fetchArtistSongs } from '@slices/songsSlice';
-import Loading from '@common/Loading';
+import Progress from '@common/Progress';
 import Pagination from '@components/Pagination';
 import SongsList from '../components/Song/List';
 import { baseURL } from '@constants/api';
@@ -27,18 +27,18 @@ export default function ArtistPage() {
     dispatch(setPage(newPage));
   };
 
-  if (loadingArtist) {
+  if (selectedArtist === null) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-        <Loading />
+        <Typography>Artist not found</Typography>
       </Box>
     );
   }
 
-  if (!selectedArtist) {
+  if (loadingArtist || loadingSongs) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-        <Typography>Artist not found</Typography>
+        <Progress />
       </Box>
     );
   }
@@ -63,9 +63,7 @@ export default function ArtistPage() {
           alignItems: 'center',
           mb: 5,
         }}>
-        {loadingSongs ? (
-          <Loading />
-        ) : !songs?.length ? (
+        {!songs?.length ? (
           <Typography>No songs available for this artist</Typography>
         ) : (
           <SongsList
