@@ -9,16 +9,12 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3031;
 
-const allowedOrigins = [process.env.FRONTEND_URL];
-const allowedMethods = ['HEAD', 'GET', 'POST', 'PUT', 'DELETE'];
-const allowedHeaders = ['Content-Type', 'Accept', 'Authorization'];
-const exposedHeaders = ['Content-Length', 'Accept-Ranges']
-
 app.use(cors({
-    origin: allowedOrigins,
-    methods: allowedMethods,
-    allowedHeaders: allowedHeaders,
-    exposedHeaders: exposedHeaders,
+    origin: true,                                                   // Allows any origin
+    // origin: [process.env.FRONTEND_URL],                          // Allow only trusted origin
+    methods: ['HEAD', 'GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'Accept-Ranges']
 }));
 
 app.options('*', cors());
